@@ -94,9 +94,9 @@ class PassMan(ttk.Frame):
         self.content.pack_propagate(0)
 
         # first Login Check
-        #self.splash = tkinter.Toplevel(self.content)
+        # self.splash = tkinter.Toplevel(self.content)
         # self.splash.configure(background="#D9D9D9")
-        #self.splash.columnconfigure((0, 1), weight=1, pad=20)
+        # self.splash.columnconfigure((0, 1), weight=1, pad=20)
 
         if self.loggedIn == False:
             self.loginNotice = ttk.Frame(self.content)
@@ -118,6 +118,10 @@ class PassMan(ttk.Frame):
             # create master password
 
             self.create = tkinter.Toplevel(self)
+
+            # Hide window before centering
+            self.create.withdraw()
+
             self.create.configure(background="#D9D9D9")
 
             self.createLabel = ttk.Label(
@@ -137,11 +141,25 @@ class PassMan(ttk.Frame):
 
             self.createMasterPwdEntry.bind("<Return>", lambda event: self.loginCheck())
 
+            # perform window centering
+            self.create.update_idletasks()  # Update "requested size" from geometry manager
+
+            x = (self.create.winfo_screenwidth() - self.create.winfo_reqwidth()) / 2
+            y = (self.create.winfo_screenheight() - self.create.winfo_reqheight()) / 2
+            self.create.geometry("+%d+%d" % (x, y))
+
+            # window centered display it
+            self.create.deiconify()
+
             self.create.lift()
         else:
             # login Frame :
 
             self.login = tkinter.Toplevel(self)
+
+            # Hide window before centering
+            self.login.withdraw()
+
             self.login.configure(background="#D9D9D9")
 
             self.loginLabel = ttk.Label(
@@ -159,6 +177,16 @@ class PassMan(ttk.Frame):
             self.masterPwdEntry.focus()
 
             self.masterPwdEntry.bind("<Return>", lambda event: self.loginCheck())
+
+            # perform window centering
+            self.login.update_idletasks()  # Update "requested size" from geometry manager
+
+            x = (self.login.winfo_screenwidth() - self.login.winfo_reqwidth()) / 2
+            y = (self.login.winfo_screenheight() - self.login.winfo_reqheight()) / 2
+            self.login.geometry("+%d+%d" % (x, y))
+
+            # window centered display it
+            self.login.deiconify()
 
             self.login.lift()
 
@@ -225,8 +253,21 @@ class PassMan(ttk.Frame):
                 self.tree.insert("", "end", text=entry[2], values=(
                     entry[3], "**********", entry[1]), tags=("even",))
 
+        # Hide window before centering
+        root.withdraw()
+
         self.label.pack()
         self.tableFrame.pack(expand=True, fill="both")
+
+        # perform window centering
+        root.update_idletasks()  # Update "requested size" from geometry manager
+
+        x = (root.winfo_screenwidth() - root.winfo_reqwidth()) / 2
+        y = (root.winfo_screenheight() - root.winfo_reqheight()) / 2
+        root.geometry("+%d+%d" % (x, y))
+
+        # window centered display it
+        root.deiconify()
 
     def newPwd(self, length=8):
         pwdCharSet = string.ascii_letters + string.digits + string.punctuation
@@ -240,6 +281,10 @@ class PassMan(ttk.Frame):
         # Generate new password Frame
 
         self.generateNew = tkinter.Toplevel(self)
+
+        # Hide window before centering
+        self.generateNew.withdraw()
+
         self.generateNew.configure(background="#D9D9D9")
         self.generateNew.columnconfigure((0, 1), weight=1, pad=20)
 
@@ -281,6 +326,16 @@ class PassMan(ttk.Frame):
         self.generateAgainButton.grid(row=4, column=1, pady=(30, 30))
         self.savePwdLabel.grid(row=5, column=0, pady=(0, 30))
         self.savePwdButton.grid(row=5, column=1, pady=(0, 30))
+
+        # perform window centering
+        self.generateNew.update_idletasks()  # Update "requested size" from geometry manager
+
+        x = (self.generateNew.winfo_screenwidth() - self.generateNew.winfo_reqwidth()) / 2
+        y = (self.generateNew.winfo_screenheight() - self.generateNew.winfo_reqheight()) / 2
+        self.generateNew.geometry("+%d+%d" % (x, y))
+
+        # window centered display it
+        self.generateNew.deiconify()
 
     def generateNewPwdAgain(self, length=8):
         length = self.pwdLengthScale.get()
@@ -373,6 +428,10 @@ class PassMan(ttk.Frame):
         # Save credential Frame
 
         self.saveNew = tkinter.Toplevel(self)
+
+        # Hide window before centering
+        self.saveNew.withdraw()
+
         self.saveNew.configure(background="#D9D9D9")
         self.saveNew.columnconfigure((0, 1), weight=1, pad=20)
         self.saveNewWindowLabel = ttk.Label(
@@ -408,6 +467,16 @@ class PassMan(ttk.Frame):
 
         self.saveNewTitleEntry.focus()
 
+        # perform window centering
+        self.saveNew.update_idletasks()  # Update "requested size" from geometry manager
+
+        x = (self.saveNew.winfo_screenwidth() - self.saveNew.winfo_reqwidth()) / 2
+        y = (self.saveNew.winfo_screenheight() - self.saveNew.winfo_reqheight()) / 2
+        self.saveNew.geometry("+%d+%d" % (x, y))
+
+        # window centered display it
+        self.saveNew.deiconify()
+
     def saveNewCredential(self):
 
         # Validate reentered master password
@@ -433,6 +502,10 @@ class PassMan(ttk.Frame):
                 pass
 
         self.masterPwdReenter = tkinter.Toplevel(self.saveNew)
+
+        # Hide window before centering
+        self.masterPwdReenter.withdraw()
+
         self.masterPwdReenter.configure(background="#D9D9D9")
 
         self.masterReenterLabel = ttk.Label(
@@ -451,15 +524,41 @@ class PassMan(ttk.Frame):
 
         self.masterReenterEntry.bind("<Return>", encryptAndSave)
 
+        # perform window centering
+        self.masterPwdReenter.update_idletasks()  # Update "requested size" from geometry manager
+
+        x = (self.masterPwdReenter.winfo_screenwidth() - self.masterPwdReenter.winfo_reqwidth()) / 2
+        y = (self.masterPwdReenter.winfo_screenheight() -
+             self.masterPwdReenter.winfo_reqheight()) / 2
+        self.masterPwdReenter.geometry("+%d+%d" % (x, y))
+
+        # window centered display it
+        self.masterPwdReenter.deiconify()
+
 
 # App Gui instanciation :
+# def centerWindow(win):
+#    win.eval('tk::PlaceWindow %s center' % win.winfo_pathname(win.winfo_id()))
 
 
 if __name__ == "__main__":
     root = tkinter.Tk()
+    # centerWindow(root)
     root.wm_title("Password Manager")
+
+    root.withdraw()
 
     main = PassMan(root)
     main.pack(fill="both", expand=True)
+
+    root.update_idletasks()  # Update "requested size" from geometry manager
+
+    x = (root.winfo_screenwidth() - root.winfo_reqwidth()) / 2
+    y = (root.winfo_screenheight() - root.winfo_reqheight()) / 2
+    root.geometry("+%d+%d" % (x, y))
+
+    # This seems to draw the window frame immediately, so only call deiconify()
+    # after setting correct window position
+    root.deiconify()
 
     root.mainloop()
