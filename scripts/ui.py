@@ -56,8 +56,12 @@ class PassMan(ttk.Frame):
         self.label = ttk.Label(self.content, text="STORED CREDENTIALS",
                                padding=20, font="helvetica 16 bold")
 
-        self.tree = ttk.Treeview(self.content, columns=(
-            "Login", "Password", "Date"), style="mystyle.Treeview")
+        self.tableFrame = ttk.Frame(self.content)
+        self.tableFrame.columnconfigure((0), weight=1)
+        self.tableFrame.rowconfigure((0), weight=1)
+
+        self.tree = ttk.Treeview(self.tableFrame, columns=(
+            "Login", "Password", "Date"), style="mystyle.Treeview", selectmode='browse')
         self.tree.column("#0", stretch=False)
         self.tree.column("Login", stretch=False)
         self.tree.column("Date", stretch=False)
@@ -72,6 +76,14 @@ class PassMan(ttk.Frame):
         self.tree.bind("<Button-1>", self.showPassword)
         self.tree.bind("<Leave>", self.hidePasswords)
         self.tree.bind("<Double-1>", self.onTreeDoubleClick)
+
+        self.vsb = ttk.Scrollbar(self.tableFrame, orient="vertical",
+                                 command=self.tree.yview)
+
+        self.tree.pack(side="left", expand=True, fill="both")
+        self.vsb.pack(side="right", fill="y")
+
+        self.tree.configure(yscrollcommand=self.vsb.set)
 
         self.quitBtn = ttk.Button(self.content, text="Quit",
                                   style="TButton", command=root.destroy)
@@ -121,6 +133,8 @@ class PassMan(ttk.Frame):
             self.createMasterPwdEntry.pack(padx=20, pady=20)
             self.createMasterPwdButton.pack(padx=20, pady=20)
 
+            self.createMasterPwdEntry.focus()
+
             self.createMasterPwdEntry.bind("<Return>", lambda event: self.loginCheck())
 
             self.create.lift()
@@ -141,6 +155,8 @@ class PassMan(ttk.Frame):
             self.loginLabel.pack(padx=20, pady=20)
             self.masterPwdEntry.pack(padx=20, pady=20)
             self.loginButton.pack(padx=20, pady=20)
+
+            self.masterPwdEntry.focus()
 
             self.masterPwdEntry.bind("<Return>", lambda event: self.loginCheck())
 
@@ -210,7 +226,7 @@ class PassMan(ttk.Frame):
                     entry[3], "**********", entry[1]), tags=("even",))
 
         self.label.pack()
-        self.tree.pack(expand=True, fill="both")
+        self.tableFrame.pack(expand=True, fill="both")
 
     def newPwd(self, length=8):
         pwdCharSet = string.ascii_letters + string.digits + string.punctuation
@@ -390,6 +406,8 @@ class PassMan(ttk.Frame):
         self.saveNewPwdEntry.grid(row=3, column=1, pady=20)
         self.saveNewCredentialButton.grid(row=4, columnspan=2, pady=20)
 
+        self.saveNewTitleEntry.focus()
+
     def saveNewCredential(self):
 
         # Validate reentered master password
@@ -407,6 +425,8 @@ class PassMan(ttk.Frame):
                 database.insertCred(newCredTitle, newCredLogin, encypted_pwd)
 
                 self.saveNew.destroy()
+
+                self.showAllCredentials()
 
             else:
                 self.masterReenterEntry.delete(0, "end")
@@ -426,6 +446,8 @@ class PassMan(ttk.Frame):
         self.masterReenterLabel.pack(padx=20, pady=20)
         self.masterReenterEntry.pack(padx=20, pady=20)
         self.masterReenterValidate.pack(padx=20, pady=20)
+
+        self.masterReenterEntry.focus()
 
         self.masterReenterEntry.bind("<Return>", encryptAndSave)
 
