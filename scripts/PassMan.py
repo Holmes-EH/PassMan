@@ -8,7 +8,7 @@ from security import user_pwd_context
 import rncryptor
 import pyperclip
 
-database = Database("../passMan.db")
+database = Database("passMan.db")
 
 
 # App Gui interface configuration :
@@ -55,6 +55,8 @@ class PassMan(ttk.Frame):
 
         self.label = ttk.Label(self.content, text="STORED CREDENTIALS",
                                padding=20, font="helvetica 16 bold")
+        self.labelExpl = ttk.Label(
+            self.content, text="Hold left-click on password cell to display it. Double-click any cell to copy its content to clipboard.", font="helvetica 12 italic")
 
         self.tableFrame = ttk.Frame(self.content)
         self.tableFrame.columnconfigure((0), weight=1)
@@ -75,6 +77,7 @@ class PassMan(ttk.Frame):
 
         self.tree.bind("<Button-1>", self.showPassword)
         self.tree.bind("<ButtonRelease-1>", self.hidePasswords)
+        self.tree.bind("<B1-Motion>", self.hidePasswords)
         self.tree.bind("<Double-1>", self.onTreeDoubleClick)
 
         self.vsb = ttk.Scrollbar(self.tableFrame, orient="vertical",
@@ -219,6 +222,7 @@ class PassMan(ttk.Frame):
         item = self.tree.identify("item", event.x, event.y)
         id = self.tree.index(item)+1
         colNum = int(self.tree.identify_column(event.x)[1:])-1
+        colTitle = self.tree.heading(self.tree.identify_column(event.x))['text']
         valSelected = self.tree.item(item, "values")[colNum]
 
         def decryptPwd(encryptedPwd):
@@ -237,7 +241,7 @@ class PassMan(ttk.Frame):
         else:
             pyperclip.copy(valSelected)
 
-        messagebox.showinfo(message="Copied to clipboard !")
+        messagebox.showinfo(message=(colTitle + "\nCopied to clipboard !"))
 
     def showAllCredentials(self):
         self.tree.delete(*self.tree.get_children())
@@ -255,6 +259,7 @@ class PassMan(ttk.Frame):
         root.withdraw()
 
         self.label.pack()
+        self.labelExpl.pack()
         self.tableFrame.pack(expand=True, fill="both")
 
         # perform window centering
@@ -344,7 +349,7 @@ class PassMan(ttk.Frame):
         self.generateNewPwdEntry.config(state="readonly")
 
     def createMasterPwd(self):
-        policy_config_path = "../config/config.ini"
+        policy_config_path = "config.ini"
         user_pwd_context.load_path(policy_config_path)
 
         if len(self.createMasterPwdEntry.get()) < 8:
@@ -373,7 +378,7 @@ class PassMan(ttk.Frame):
 
     def loginCheck(self, validating=False, enteredMasterPwdEntry=None):
 
-        policy_config_path = "../config/config.ini"
+        policy_config_path = "config.ini"
         user_pwd_context.load_path(policy_config_path)
 
         hash = database.readMasterPwd()[0]
