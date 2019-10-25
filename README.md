@@ -21,5 +21,5 @@ and run app :
 Mess around and tell me where I went wrong. It works fine but I'm quite new to this, so I'm sure I messed up somewhere..
 
 I also am working on packaging it using <a href="https://sveinbjorn.org/platypus">Platypus</a>.
-Platypus works fine as long as you include all the scripts in th "scripts" directory for bundling.
+Platypus works fine as long as you include all the scripts in the "scripts" directory for bundling.
 All that is left to do is create an icon for it to look nicer...
