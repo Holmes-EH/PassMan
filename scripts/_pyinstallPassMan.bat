@@ -1,0 +1,1 @@
+pyi-makespec --distpath="..\dist\windowsBuild" --windowed --hidden-import=passlib --hidden-import=configparser --hidden-import=passlib.handlers --hidden-import=passlib.handlers.pbkdf2 --hidden-import=passlib.handlers.sha2_crypt --hidden-import=passlib.handlers.md5_crypt --hidden-import=passlib.handlers.des_crypt --icon="..\dist\PassMan_icon.ico" --name PassMan PassMan.py
