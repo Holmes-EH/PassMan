@@ -96,7 +96,7 @@ class PassMan(ttk.Frame):
         self.content.pack(expand=True, fill="both")
         self.content.pack_propagate(0)
 
-        if self.loggedIn == False:
+        if self.loggedIn is False:
             self.loginNotice = ttk.Frame(self.content)
             self.loginNowLabel = ttk.Label(self.loginNotice, text="You need to log in !",
                                            padding=20, font="helvetica 16 bold")
@@ -112,7 +112,7 @@ class PassMan(ttk.Frame):
     # Menu buttons callback functions :
     def logInNow(self):
         pass
-        if database.readMasterPwd() == None:
+        if database.readMasterPwd() is None:
             # create master password
 
             self.create = tkinter.Toplevel(self)
@@ -198,7 +198,7 @@ class PassMan(ttk.Frame):
 
     def showPassword(self, event):
         item = self.tree.identify("item", event.x, event.y)
-        id = self.tree.index(item)+1
+        id = self.tree.index(item) + 1
         showColNum = int(self.tree.identify_column(event.x)[1:])
 
         def decryptPwd(encryptedPwd):
@@ -220,8 +220,8 @@ class PassMan(ttk.Frame):
 
     def onTreeDoubleClick(self, event):
         item = self.tree.identify("item", event.x, event.y)
-        id = self.tree.index(item)+1
-        colNum = int(self.tree.identify_column(event.x)[1:])-1
+        id = self.tree.index(item) + 1
+        colNum = int(self.tree.identify_column(event.x)[1:]) - 1
         colTitle = self.tree.heading(self.tree.identify_column(event.x))['text']
         valSelected = self.tree.item(item, "values")[colNum]
 
@@ -383,7 +383,7 @@ class PassMan(ttk.Frame):
 
         hash = database.readMasterPwd()[0]
         # Depending on password validation situation (loging in or validation prior to db insertion), we may need to set the entry widget
-        if enteredMasterPwdEntry == None:
+        if enteredMasterPwdEntry is None:
             enteredMasterPwdEntry = self.masterPwdEntry
 
         enteredMasterPwd = enteredMasterPwdEntry.get()
@@ -418,7 +418,7 @@ class PassMan(ttk.Frame):
                     pass
 
                 # do successful actions
-                if validating == False:
+                if validating is False:
                     self.login.destroy()
                     self.loginNotice.destroy()
 
@@ -503,7 +503,7 @@ class PassMan(ttk.Frame):
             masterPwdEntry = self.masterReenterEntry
             masterPwd = self.masterReenterEntry.get()
 
-            if self.loginCheck(True, masterPwdEntry) == True:
+            if self.loginCheck(True, masterPwdEntry) is True:
                 cryptor = rncryptor.RNCryptor()
                 encypted_pwd = cryptor.encrypt(newCredPwd, masterPwd)
                 database.insertCred(newCredTitle, newCredLogin, encypted_pwd)

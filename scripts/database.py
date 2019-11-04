@@ -34,15 +34,15 @@ class Database:
         self.conn.commit()
 
     def readCred(self, id=None, title=None, login=None):
-        if id == None and title == None and login == None:
+        if id is None and title is None and login is None:
             self.cur.execute("SELECT * FROM credentials")
-        elif login == None and id == None:
+        elif login is None and id is None:
             self.cur.execute('''SELECT * FROM credentials
                                 WHERE title = ?''', (title,))
-        elif id == None and title == None:
+        elif id is None and title is None:
             self.cur.execute('''SELECT * FROM credentials
                                 WHERE login = ?''', (login,))
-        elif id != None:
+        elif id is not None:
             self.cur.execute('''SELECT * FROM credentials
                                 WHERE id = ?''', (id,))
         self.conn.commit()
